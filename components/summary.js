@@ -31,7 +31,7 @@ polarity.export = PolarityComponent.extend({
     let confidenceData = Ember.A();
     this.get("details.results").forEach(function(item) {
       if(item.confidence !== undefined && item.confidence !== null){
-        confidenceData.push(item.confidence);
+        confidenceData.push("Confidence Score: " + item.confidence);
     }
   });
 
