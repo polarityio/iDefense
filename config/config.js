@@ -83,7 +83,7 @@ module.exports = {
     // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
     // the url parameter (by embedding the auth info in the uri)
     proxy: "",
-    
+
     rejectUnauthorized: true
   },
   logging: {
@@ -111,7 +111,7 @@ module.exports = {
       name: "Minimum Severity Score",
       description:
         "Minimum severity score to display in the Polarity overlay window (Scale of 1-5)",
-      default: "1",
+      default: 1,
       type: "number",
       userCanEdit: true,
       adminOnly: false
