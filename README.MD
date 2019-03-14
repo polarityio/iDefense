@@ -1,7 +1,7 @@
 # Polarity iDefense Integration
 The Polarity - iDefense integration searches iDefense for associated threat intelligence related to indicators on your screen.  The threat intelligence is then displayed  via the Polarity Overlay Window.
 
-![984b494e-b0da-400f-8a7d-245b23de6473](https://user-images.githubusercontent.com/306319/54000286-d928ec80-4114-11e9-90d3-1038d4297602.GIF)
+![idefense](https://user-images.githubusercontent.com/22529325/54382736-f3a81c00-4666-11e9-91c7-68a8b0d6ac9f.gif)
 
 To learn more about iDefense, please visit the [official website](https://www.accenture.com/us-en/service-idefense-security-intelligence).
 
