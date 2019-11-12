@@ -213,8 +213,8 @@ function _lookupEntity(entityObj, options, cb) {
     url = "https://intelgraph.idefense.com/#/node/url/view/";
   } else if (entityObj.type === "hash"){
     url = "https://intelgraph.idefense.com/#/node/file/view/";
-  } else if (entityObj.type === "custom.cve"){
-    url = "https://intelgraph.idefense.com/#/node/vulernability/view/";
+  } else if (entityObj.types.indexOf('custom.cve') >= 0){
+    url = "https://intelgraph.idefense.com/#/node/vulnerability/view/";
   }else {
     url = "https://intelgraph.idefense.com/#/node/phish/view/";
   }
