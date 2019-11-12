@@ -143,7 +143,7 @@ function _getUrl(entityObj, options) {
       break;
     case 'IPv4':
       entityType = 'ip';
-      query = 'key.query';
+      query = 'key.values';
       break;
     case 'email':
       entityType = 'phish';
