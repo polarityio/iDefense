@@ -15,7 +15,7 @@
         {{#if result.severity}}
           <div>
               <span class="p-key">Severity Level: </span>
-              <span class="p-value">{{result.severity}}</span>
+              <span class="p-value {{concat "severity-" result.severity}}">{{get severityLevels result.severity}}</span>
           </div>
         {{/if}}
 

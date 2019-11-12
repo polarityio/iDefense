@@ -1,7 +1,13 @@
 'use strict';
 polarity.export = PolarityComponent.extend({
   dataPerPage: 5,
-
+  severityLevels: {
+    5: 'CRITICAL',
+    4: 'HIGH',
+    3: 'MEDIUM',
+    2: 'LOW',
+    1: 'MINIMAL'
+  },
   allDataShowing: Ember.computed('block.data.details.body.results.length', 'maxData', function() {
     return this.get('maxData') >= this.get('block.data.details.body.results.length');
   }),
