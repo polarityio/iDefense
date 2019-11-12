@@ -153,36 +153,38 @@ function _isEntityBlacklisted(entityObj, options) {
 }
 
 function _getUrl(entityObj) {
-  let EntityType = null;
-  let Query = null;
+  let entityType = null;
+  let query = null;
+  let entityValue = entityObj.value.toLowerCase();
   // map entity object type to the IRIS REST API type
   switch (entityObj.type) {
     case "domain":
-      EntityType = "domain";
-      Query= "?key.query";
+      entityType = "domain";
+      query= "?key.query";
       break;
     case "IPv4":
-      EntityType = "ip";
-      Query= "?key.query";
+      entityType = "ip";
+      query= "?key.query";
       break;
     case "email":
-      EntityType = "phish";
-      Query= "?sender.query";
+      entityType = "phish";
+      query= "?sender.query";
       break;
     case "hash":
-      EntityType = "file";
-      Query= "?key.query";
+      entityType = "file";
+      query= "?key.query";
       break;
     case "custom":
-      EntityType = "vulnerability";
-      Query= "?key.query";
+      entityType = "vulnerability";
+      query= "?key.values";
+      entityValue=entityObj.value.toUpperCase();
       break;
     case "url":
-      EntityType = "url";
-      Query= "?key.query";
+      entityType = "url";
+      query= "?key.query";
       break;
   }
-  return `${BASE_URI}${EntityType}${Query}=${entityObj.value.toLowerCase()}`;
+  return `${BASE_URI}${entityType}${query}=${entityValue}`;
 }
 
 
