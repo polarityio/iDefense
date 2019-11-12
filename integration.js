@@ -241,22 +241,6 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
-    let scores = [];
-
-    body.results.forEach(function(a) {
-      scores.push(a.severity);
-    });
-
-    let score = scores[0];
-
-    if (score < minScore) {
-      cb(null, {
-        entity: entityObj,
-        data: null // this entity will be cached as a miss
-      });
-      return;
-    }
-
     // The lookup results returned is an array of lookup objects with the following format
     cb(null, {
       // Required: This is the entity object passed into the integration doLookup method
