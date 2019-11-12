@@ -166,7 +166,8 @@ function _getUrl(entityObj, options) {
   let request = {
     uri: `${BASE_URI}${entityType}`,
     qs: {
-      page_size: options.pageSize
+      page_size: options.pageSize,
+      'severity.from': options.minScore
     }
   };
 
