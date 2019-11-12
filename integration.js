@@ -144,7 +144,7 @@ function _getUrl(entityObj, options) {
     uri: `${BASE_URI}${entityType}`,
     qs: {
       page_size: options.pageSize,
-      'severity.from': options.minScore
+      'severity.from': options.minScore.value
     }
   };
 
@@ -167,8 +167,6 @@ function _getRequestOptions(entityObj, options) {
 
 function _lookupEntity(entityObj, options, cb) {
   const requestOptions = _getRequestOptions(entityObj, options);
-
-  let minScore = parseInt(options.minScore, 10);
 
   Logger.debug({ options: requestOptions }, 'Checking the request options coming through');
   let url = null;

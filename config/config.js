@@ -107,12 +107,37 @@ module.exports = {
       adminOnly: false
     },
     {
-      key: "minScore",
-      name: "Minimum Severity Score",
-      description:
-        "Minimum severity score to display in the Polarity overlay window (Scale of 1-5)",
-      default: 1,
-      type: "number",
+      key: 'minScore',
+      name: 'Minimum Severity Score',
+      description: 'The minimum severity score required for indicators to be displayed in the Overlay Window',
+      default: {
+        value: '1',
+        display: '1 - Minimal'
+      },
+      type: 'select',
+      options: [
+        {
+          value: '5',
+          display: '5 - Critical'
+        },
+        {
+          value: '4',
+          display: '4 - High'
+        },
+        {
+          value: '3',
+          display: '3 - Medium'
+        },
+        {
+          value: '2',
+          display: '2 - Low'
+        },
+        {
+          value: '1',
+          display: '1 - Minimal'
+        }
+      ],
+      multiple: false,
       userCanEdit: true,
       adminOnly: false
     },
