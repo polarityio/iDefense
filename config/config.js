@@ -69,16 +69,16 @@ module.exports = {
   },
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
-    // Relative paths are relative to the METD integration's root directory
+    // Relative paths are relative to the integration's root directory
     cert: "",
     // Provide the path to your private key. Leave an empty string to ignore this option.
-    // Relative paths are relative to the METD integration's root directory
+    // Relative paths are relative to the integration's root directory
     key: "",
     // Provide the key passphrase if required.  Leave an empty string to ignore this option.
-    // Relative paths are relative to the METD integration's root directory
+    // Relative paths are relative to the integration's root directory
     passphrase: "",
     // Provide the Certificate Authority. Leave an empty string to ignore this option.
-    // Relative paths are relative to the METD integration's root directory
+    // Relative paths are relative to the integration's root directory
     ca: "",
     // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
     // the url parameter (by embedding the auth info in the uri)
@@ -102,17 +102,42 @@ module.exports = {
       name: "API Key",
       description: "iDefense API Key",
       default: "",
-      type: "text",
+      type: "password",
       userCanEdit: true,
       adminOnly: false
     },
     {
-      key: "minScore",
-      name: "Minimum Severity Score",
-      description:
-        "Minimum severity score to display in the Polarity overlay window (Scale of 1-5)",
-      default: 1,
-      type: "number",
+      key: 'minScore',
+      name: 'Minimum Severity Score',
+      description: 'The minimum severity score required for indicators to be displayed in the Overlay Window',
+      default: {
+        value: '1',
+        display: '1 - Minimal'
+      },
+      type: 'select',
+      options: [
+        {
+          value: '5',
+          display: '5 - Critical'
+        },
+        {
+          value: '4',
+          display: '4 - High'
+        },
+        {
+          value: '3',
+          display: '3 - Medium'
+        },
+        {
+          value: '2',
+          display: '2 - Low'
+        },
+        {
+          value: '1',
+          display: '1 - Minimal'
+        }
+      ],
+      multiple: false,
       userCanEdit: true,
       adminOnly: false
     },

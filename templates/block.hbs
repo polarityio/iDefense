@@ -1,239 +1,242 @@
-<div class="p-non-exfoliate-outer-padding">
-
-
 {{#if block.data.details.body.results}}
 <div class="pulses">
 {{#each (limit block.data.details.body.results maxData) as |result|}}
-
-<div>
-    <span class="p-title">{{fa-icon "info-circle" fixedWidth=true}} iDefense Results</span>
-</div>
-
-{{#if result.uuid}}
-<div class="whois-container">
-    <a class="p-link" href="{{block.data.details.url}}{{result.uuid}}"> View in IntelGraph {{fa-icon "external-link" class="external-icon"}}</a>
-</div>
-{{/if}}
-
-<div class="pulse-container">
-
-  {{#if result.severity}}
-      <div>
-          <span class="p-key">Severity Level: </span>
-          <span class="p-value">{{result.severity}}</span>
-      </div>
-  {{/if}}
-
-  {{#if result.confidence}}
-      <div>
-          <span class="p-key">Confidence: </span>
-          <span class="p-value">{{result.confidence}}</span>
-      </div>
-  {{/if}}
-
-{{#if result.created_on}}
     <div>
-        <span class="p-key">Created Date: </span>
-        <span class="p-value">{{result.created_on}}</span>
+        <span class="p-title">{{fa-icon "info-circle" fixedWidth=true}} iDefense Results</span>
     </div>
-{{/if}}
-{{#if result.last_modified}}
-    <div>
-        <span class="p-key">Last Modified: </span>
-        <span class="p-value">{{result.last_modified}}</span>
-    </div>
-{{/if}}
-{{#if result.last_published}}
-    <div>
-        <span class="p-key">Last Published: </span>
-        <span class="p-value">{{result.last_published}}</span>
-    </div>
-{{/if}}
 
-{{#if result.file_extenstion}}
-    <div>
-        <span class="p-key">File Extension: </span>
-        <span class="p-value">{{result.file_extenstion}}</span>
-    </div>
-{{/if}}
-{{#if result.file_class}}
-    <div>
-        <span class="p-key">File Class: </span>
-        <span class="p-value">{{result.file_class}}</span>
-    </div>
-{{/if}}
-{{#if result.filetype}}
-    <div>
-        <span class="p-key">FileType: </span>
-        <span class="p-value">{{result.filetype}}</span>
-    </div>
-{{/if}}
-
-{{#if result.filenames}}
-{{#each result.filenames as |files|}}
-<div>
-    <span class="p-title">{{fa-icon "file" fixedWidth=true}} File Names</span>
-</div>
-<div>
-  <span class="p-value">{{files}}</span>
-</div>
-{{/each}}
-{{/if}}
-
-{{#if result.packers}}
-{{#each result.packers as |packer|}}
-<div>
-    <span class="p-title">{{fa-icon "file" fixedWidth=true}} Packers</span>
-</div>
-<div>
-  <span class="p-value">{{files}}</span>
-</div>
-
-{{/each}}
-{{/if}}
-
-{{#if result.links}}
-{{#each result.links as |link|}}
-<div>
-    <span class="p-title">{{fa-icon "link" fixedWidth=true}} Links</span>
-</div>
-  {{#if link.key}}
-    <div>
-      <span class="p-key">Name: </span>
-      <span class="p-value">{{link.key}}</span>
-    </div>
-  {{/if}}
-  {{#if link.relationship}}
-    <div>
-      <span class="p-key">Relationship to Entity: </span>
-      <span class="p-value">{{link.relationship}}</span>
-    </div>
-  {{/if}}
-  {{#if link.type}}
-    <div>
-      <span class="p-key">Type: </span>
-      <span class="p-value">{{link.type}}</span>
-    </div>
-  {{/if}}
-{{/each}}
-{{/if}}
-
-
-{{#if result.product}}
-<div>
-    <span class="p-title">{{fa-icon "note" fixedWidth=true}} CPE Information</span>
-</div>
-<div>
-  <span class="p-key">CPE Product: </span>
-  <span class="p-value">{{result.product}}</span>
-</div>
-{{/if}}
-
-{{#if result.vendor}}
-<div>
-  <span class="p-key">CPE Vendor: </span>
-  <span class="p-value">{{result.vendor}}</span>
-</div>
-{{/if}}
-
-{{#if result.version}}
-<div>
-  <span class="p-key">CPE Version: </span>
-  <span class="p-value">{{result.version}}</span>
-</div>
-{{/if}}
-
-
-{{#each result.last_seen_as as |seen|}}
-  {{#if seen}}
-  <div>
-      <span class="p-title">{{fa-icon "eye" fixedWidth=true}} Last Seen As</span>
-  </div>
-  <div>
-    <span class="p-value">{{seen}}</span>
-  </div>
-  {{/if}}
-{{/each}}
-
-{{#each result.threat_types as |threat|}}
-  {{#if threat}}
-  <div>
-      <span class="p-title">{{fa-icon "exclamation-triangle" fixedWidth=true}} Threat Types</span>
-  </div>
-  <div>
-    <span class="p-value">{{threat}}</span>
-  </div>
-  {{/if}}
-{{/each}}
-
-{{#if result.body}}
-  <h1 class="p-title">
-      {{fa-icon "envelope" }}
-        View Email information
-        <span class="p-action view-more" {{action "toggleScanner"}}>
-    {{#if isShowingDiv}}
-        (Hide Email Details<i class="fa fa-fw fa-angle-up"></i>)
-    {{else}}
-        (View Details<i class="fa fa-fw fa-angle-down"></i>)
-    {{/if}}
-      </span>
-    </h1>
-    {{#if isShowingDiv}}
-    <div>
-      <pre>Sender: {{result.sender}}</pre>
-      {{#each result.to as |to|}}
-        <pre> Email Recipient: {{to}}</pre>
-      {{/each}}
-      <pre>Subject: {{result.subject}}</pre>
-      <pre>Body: {{result.body}}</pre>
-      <pre>Headers: {{result.raw_headers}}</pre>
+    {{#if result.uuid}}
+    <div class="whois-container">
+        <a class="p-link" href="{{block.data.details.url}}{{result.uuid}}"> View in IntelGraph {{fa-icon "external-link" class="external-icon"}}</a>
     </div>
     {{/if}}
-{{/if}}
 
-{{#if result.arguments}}
-{{#each result.arguments as |arg|}}
-<div>
-    <span class="p-title">{{fa-icon "search-plus" fixedWidth=true}} {{arg.key}}</span>
-</div>
-<div>
-  <span class="p-value">{{arg.value}}</span>
-</div>
-{{/each}}
-{{/if}}
+    <div class="pulse-container">
+        {{#if result.severity}}
+          <div>
+              <span class="p-key">Severity Level: </span>
+              <span class="p-value {{concat "severity-" result.severity}}">{{get severityLevels result.severity}}</span>
+          </div>
+        {{/if}}
 
-{{#if result.analysis}}
-  <h1 class="p-title">
-      {{fa-icon "map" }}
-        View CVE Analysis
-        <span class="p-action view-more" {{action "toggleScanner"}}>
-    {{#if isShowingDiv}}
-        (Hide Analysis Details<i class="fa fa-fw fa-angle-up"></i>)
-    {{else}}
-        (View Details<i class="fa fa-fw fa-angle-down"></i>)
-    {{/if}}
-      </span>
-    </h1>
-    {{#if isShowingDiv}}
-    <div>
-      <div>
-          <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Analysis</span>
-      </div>
-      <div>
-        <span class="p-value">{{result.analysis}}</span>
-      </div>
-      <<div>
-          <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Description</span>
-      </div>
-      <div>
-        <span class="p-value">{{result.description}}</span>
-      </div>
+        {{#if result.confidence}}
+          <div>
+              <span class="p-key">Confidence: </span>
+              <span class="p-value">{{result.confidence}}</span>
+          </div>
+        {{/if}}
+
+        {{#if result.created_on}}
+            <div>
+                <span class="p-key">Created Date: </span>
+                <span class="p-value">{{result.created_on}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.last_modified}}
+            <div>
+                <span class="p-key">Last Modified: </span>
+                <span class="p-value">{{result.last_modified}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.last_published}}
+            <div>
+                <span class="p-key">Last Published: </span>
+                <span class="p-value">{{result.last_published}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.file_extenstion}}
+            <div>
+                <span class="p-key">File Extension: </span>
+                <span class="p-value">{{result.file_extenstion}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.file_class}}
+            <div>
+                <span class="p-key">File Class: </span>
+                <span class="p-value">{{result.file_class}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.filetype}}
+            <div>
+                <span class="p-key">FileType: </span>
+                <span class="p-value">{{result.filetype}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.filenames}}
+            <div>
+                <span class="p-title">{{fa-icon "file" fixedWidth=true}} File Names</span>
+            </div>
+            {{#each result.filenames as |files|}}
+              <span class="i-tag">{{files}}</span>
+            {{/each}}
+        {{/if}}
+
+        {{#if result.packers}}
+            {{#each result.packers as |packer|}}
+                <div>
+                    <span class="p-title">{{fa-icon "file" fixedWidth=true}} Packers</span>
+                </div>
+                <div>
+                  <span class="p-value">{{files}}</span>
+                </div>
+            {{/each}}
+        {{/if}}
+
+
+        {{#if result.product}}
+            <div>
+                <span class="p-title">{{fa-icon "box" fixedWidth=true}} CPE Information</span>
+            </div>
+            <div>
+              <span class="p-key">CPE Product: </span>
+              <span class="p-value">{{result.product}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.vendor}}
+            <div>
+              <span class="p-key">CPE Vendor: </span>
+              <span class="p-value">{{result.vendor}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.version}}
+            <div>
+              <span class="p-key">CPE Version: </span>
+              <span class="p-value">{{result.version}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.last_seen_as}}
+            <div>
+                <span class="p-title">{{fa-icon "eye" fixedWidth=true}} Last Seen As</span>
+            </div>
+            {{#each result.last_seen_as as |seen|}}
+                <span class="i-tag">{{seen}}</span>
+            {{/each}}
+        {{/if}}
+
+
+        {{#if result.threat_types}}
+            <div>
+              <span class="p-title">{{fa-icon "exclamation-triangle" fixedWidth=true}} Threat Types</span>
+            </div>
+            {{#each result.threat_types as |threat|}}
+                <span class="i-tag">{{threat}}</span>
+            {{/each}}
+        {{/if}}
+
+
+        {{#if result.body}}
+            <h1 class="p-title"> {{fa-icon "envelope" fixedWidth=true}} View Email information
+                <span class="p-action view-more" {{action "toggleScanner"}}>
+                    {{#if isShowingDiv}}
+                        (Hide Email Details<i class="fa fa-fw fa-angle-up"></i>)
+                    {{else}}
+                        (View Details<i class="fa fa-fw fa-angle-down"></i>)
+                    {{/if}}
+                </span>
+            </h1>
+            {{#if isShowingDiv}}
+                <div>
+                    <pre>Sender: {{result.sender}}</pre>
+                    {{#each result.to as |to|}}
+                     <pre> Email Recipient: {{to}}</pre>
+                    {{/each}}
+                    <pre>Subject: {{result.subject}}</pre>
+                    <pre>Body: {{result.body}}</pre>
+                    <pre>Headers: {{result.raw_headers}}</pre>
+                </div>
+            {{/if}}
+        {{else if result.subject}}
+            <div>
+                <span class="p-title">{{fa-icon "envelope" fixedWidth=true}} Email Subject</span>
+            </div>
+            <div>
+                <span class="p-value">{{result.subject}}</span>
+            </div>
+        {{/if}}
+
+        {{#if result.arguments}}
+            {{#each result.arguments as |arg|}}
+                <div>
+                    <span class="p-title">{{fa-icon "search-plus" fixedWidth=true}} {{arg.key}}</span>
+                </div>
+                <div>
+                  <span class="p-value">{{arg.value}}</span>
+                </div>
+            {{/each}}
+        {{/if}}
+
+        {{#if result.analysis}}
+            <h1 class="p-title">
+                {{fa-icon "map" }}
+                View CVE Analysis
+                <span class="p-action view-more" {{action "toggleScanner"}}>
+                    {{#if isShowingDiv}}
+                        &nbsp;(Hide Analysis Details<i class="fa fa-fw fa-angle-up"></i>)
+                    {{else}}
+                        &nbsp;(View Details<i class="fa fa-fw fa-angle-down"></i>)
+                     {{/if}}
+                 </span>
+             </h1>
+            {{#if isShowingDiv}}
+                <div>
+                    <div>
+                        <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Analysis</span>
+                    </div>
+                    <div>
+                        <span class="p-value text-paragraph">{{result.analysis}}</span>
+                    </div>
+                    <div>
+                        <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Description</span>
+                    </div>
+                    <div>
+                        <span class="p-value text-paragraph">{{result.description}}</span>
+                    </div>
+                </div>
+            {{/if}}
+        {{/if}}
+
+        {{#if result.links}}
+            <div>
+                <span class="p-title">{{fa-icon "link" fixedWidth=true}} Relationships</span>
+            </div>
+            {{#each result.links as |link|}}
+                <div class="relationship-block">
+                {{#if link.key}}
+                    <div>
+                        <span class="p-key">Name: </span>
+                        <span class="p-value">
+                            <a class="p-link" href="https://intelgraph.idefense.com/#/node/{{link.type}}/view/{{link.uuid}}">{{link.key}} {{fa-icon "external-link" class="external-icon"}}</a>
+                        </span>
+                    </div>
+                {{/if}}
+                {{#if link.relationship}}
+                    <div>
+                        <span class="p-key">Relationship to Entity: </span>
+                        <span class="p-value">{{link.relationship}}</span>
+                    </div>
+                {{/if}}
+                {{#if link.type}}
+                    <div>
+                        <span class="p-key">Type: </span>
+                        <span class="p-value">{{link.type}}</span>
+                    </div>
+                {{/if}}
+                </div>
+            {{/each}}
+        {{/if}}
     </div>
-    {{/if}}
-{{/if}}
-</div>
 {{/each}}
 </div>
+
 {{#unless allDataShowing}}
             <span {{action "showMoreData"}} class="p-action">Show {{dataPerPage}} More Results</span>
         {{else}}
@@ -241,8 +244,6 @@
 {{/unless}}
 {{else}}
     <div>
-        {{fa-icon "exclamation-circle" class="p-yellow icon"}}<span> No More Results Avialable</span>
+        {{fa-icon "exclamation-circle" class="p-yellow icon"}}<span> No More Results Available</span>
     </div>
 {{/if}}
-
-</div>
