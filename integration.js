@@ -152,7 +152,7 @@ function _getUrl(entityObj, options) {
       break;
     case 'hash':
       entityType = 'file';
-      query = 'key.query';
+      query = 'key.values';
       break;
     case 'custom':
       entityType = 'vulnerability';
