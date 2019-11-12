@@ -51,15 +51,6 @@ function doLookup(entities, options, cb) {
     function(entityObj, next) {
       if (_isEntityBlacklisted(entityObj, options)) {
         next(null);
-      } else if (entityObj.types.indexOf('custom.cpe') >= 0) {
-        _lookupEntityCPE(entityObj, options, function(err, result) {
-          if (err) {
-            next(err);
-          } else {
-            lookupResults.push(result);
-            next(null);
-          }
-        });
       } else {
         _lookupEntity(entityObj, options, function(err, result) {
           if (err) {
@@ -131,9 +122,15 @@ function _getUrl(entityObj, options) {
       query = 'key.values';
       break;
     case 'custom':
-      entityType = 'vulnerability';
-      query = 'key.values';
-      entityValue = entityObj.value.toUpperCase(); // CVE must be in uppercase to get results
+      if (entityObj.types.indexOf('custom.cve') >= 0) {
+        entityType = 'vulnerability';
+        query = 'key.values';
+        entityValue = entityObj.value.toUpperCase(); // CVE must be in uppercase to get results
+      } else {
+        entityType = '';
+        query = 'key.values';
+        entityValue = `cpe:/${entityObj.value.toLowerCase()}`
+      }
       break;
     case 'url':
       entityType = 'url';
@@ -179,10 +176,12 @@ function _lookupEntity(entityObj, options, cb) {
     url = 'https://intelgraph.idefense.com/#/node/url/view/';
   } else if (entityObj.type === 'hash') {
     url = 'https://intelgraph.idefense.com/#/node/file/view/';
+  } else if (entityObj.type === 'email') {
+    url = 'https://intelgraph.idefense.com/#/node/phish/view/';
   } else if (entityObj.types.indexOf('custom.cve') >= 0) {
     url = 'https://intelgraph.idefense.com/#/node/vulnerability/view/';
   } else {
-    url = 'https://intelgraph.idefense.com/#/node/phish/view/';
+    url = 'https://intelgraph.idefense.com/#/node/cpe/view/';
   }
 
   requestWithDefaults(requestOptions, function(err, response, body) {
@@ -202,79 +201,6 @@ function _lookupEntity(entityObj, options, cb) {
     Logger.trace({ body: body, entity: entityObj.value }, 'HTTP Request Body');
 
     if (_.isNull(body) || _.isEmpty(body) || body.total_size === 0) {
-      cb(null, {
-        entity: entityObj,
-        data: null // this entity will be cached as a miss
-      });
-      return;
-    }
-
-    // The lookup results returned is an array of lookup objects with the following format
-    cb(null, {
-      // Required: This is the entity object passed into the integration doLookup method
-      entity: entityObj,
-      // Required: An object containing everything you want passed to the template
-      data: {
-        // Required: These are the tags that are displayed in your template
-        summary: [],
-        // Data that you want to pass back to the notification window details block
-        details: {
-          body: body,
-          url: url
-        }
-      }
-    });
-  });
-}
-
-function _lookupEntityCPE(entityObj, options, cb) {
-  let minScore = parseInt(options.minScore, 10);
-  //Logger.trace("Logging if Running");
-  const requestOptions = {
-    uri: BASE_URI + 'vuln_tech?key.query=' + entityObj.value.toLowerCase() + '&page_size=' + options.pageSize,
-    headers: { 'auth-token': options.apiKey },
-    method: 'GET',
-    json: true
-  };
-
-  Logger.trace({ options: requestOptions }, 'Checking the request options coming through');
-
-  let url = 'https://intelgraph.idefense.com/#/node/cpe/view/';
-
-  //const researchUri = LOOKUP_URI + entityObj.value;
-  requestWithDefaults(requestOptions, function(err, response, body) {
-    let errorObject = _isApiError(err, response, body, entityObj.value);
-    if (errorObject) {
-      cb(errorObject);
-      return;
-    }
-
-    if (_isLookupMiss(response, body)) {
-      return cb(null, {
-        entity: entityObj,
-        data: null
-      });
-    }
-
-    Logger.debug({ body: body, entity: entityObj.value }, 'Printing out the results of Body ');
-
-    if (_.isNull(body) || _.isEmpty(body) || body.total_size === 0) {
-      cb(null, {
-        entity: entityObj,
-        data: null // this entity will be cached as a miss
-      });
-      return;
-    }
-
-    let scores = [];
-
-    body.results.forEach(function(a) {
-      scores.push(a.severity);
-    });
-
-    let score = scores[0];
-
-    if (score < minScore) {
       cb(null, {
         entity: entityObj,
         data: null // this entity will be cached as a miss
