@@ -1,7 +1,6 @@
 {{#if block.data.details.body.results}}
 <div class="pulses">
 {{#each (limit block.data.details.body.results maxData) as |result|}}
-
     <div>
         <span class="p-title">{{fa-icon "info-circle" fixedWidth=true}} iDefense Results</span>
     </div>
@@ -116,31 +115,30 @@
             </div>
         {{/if}}
 
+        {{#if result.last_seen_as}}
+            <div>
+                <span class="p-title">{{fa-icon "eye" fixedWidth=true}} Last Seen As</span>
+            </div>
+            {{#each result.last_seen_as as |seen|}}
+                <span class="i-tag">{{seen}}</span>
+            {{/each}}
+        {{/if}}
 
-        {{#each result.last_seen_as as |seen|}}
-            {{#if seen}}
-              <div>
-                  <span class="p-title">{{fa-icon "eye" fixedWidth=true}} Last Seen As</span>
-              </div>
-              <div>
-                <span class="p-value">{{seen}}</span>
-              </div>
-            {{/if}}
-        {{/each}}
 
-        {{#each result.threat_types as |threat|}}
-            {{#if threat}}
+        {{#if result.threat_types}}
+            <div>
+              <span class="p-title">{{fa-icon "exclamation-triangle" fixedWidth=true}} Threat Types</span>
+            </div>
+            {{#each result.threat_types as |threat|}}
                 <div>
-                  <span class="p-title">{{fa-icon "exclamation-triangle" fixedWidth=true}} Threat Types</span>
+                    <span class="i-tag">{{threat}}</span>
                 </div>
-                <div>
-                <span class="p-value">{{threat}}</span>
-                </div>
-            {{/if}}
-        {{/each}}
+            {{/each}}
+        {{/if}}
+
 
         {{#if result.body}}
-            <h1 class="p-title"> {{fa-icon "envelope"}} View Email information
+            <h1 class="p-title"> {{fa-icon "envelope" fixedWidth=true}} View Email information
                 <span class="p-action view-more" {{action "toggleScanner"}}>
                     {{#if isShowingDiv}}
                         (Hide Email Details<i class="fa fa-fw fa-angle-up"></i>)
@@ -160,6 +158,13 @@
                     <pre>Headers: {{result.raw_headers}}</pre>
                 </div>
             {{/if}}
+        {{else if result.subject}}
+            <div>
+                <span class="p-title">{{fa-icon "envelope" fixedWidth=true}} Email Subject</span>
+            </div>
+            <div>
+                <span class="p-value">{{result.subject}}</span>
+            </div>
         {{/if}}
 
         {{#if result.arguments}}
@@ -179,9 +184,9 @@
                 View CVE Analysis
                 <span class="p-action view-more" {{action "toggleScanner"}}>
                     {{#if isShowingDiv}}
-                        (Hide Analysis Details<i class="fa fa-fw fa-angle-up"></i>)
+                        &nbsp;(Hide Analysis Details<i class="fa fa-fw fa-angle-up"></i>)
                     {{else}}
-                        (View Details<i class="fa fa-fw fa-angle-down"></i>)
+                        &nbsp;(View Details<i class="fa fa-fw fa-angle-down"></i>)
                      {{/if}}
                  </span>
              </h1>
@@ -191,27 +196,30 @@
                         <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Analysis</span>
                     </div>
                     <div>
-                        <span class="p-value">{{result.analysis}}</span>
+                        <span class="p-value text-paragraph">{{result.analysis}}</span>
                     </div>
                     <div>
                         <span class="p-title">{{fa-icon "exclamation-triangle"}} CVE Description</span>
                     </div>
                     <div>
-                        <span class="p-value">{{result.description}}</span>
+                        <span class="p-value text-paragraph">{{result.description}}</span>
                     </div>
                 </div>
             {{/if}}
         {{/if}}
 
         {{#if result.links}}
+            <div>
+                <span class="p-title">{{fa-icon "link" fixedWidth=true}} Relationships</span>
+            </div>
             {{#each result.links as |link|}}
-                <div>
-                    <span class="p-title">{{fa-icon "link" fixedWidth=true}} Links</span>
-                </div>
+                <div class="relationship-block">
                 {{#if link.key}}
                     <div>
                         <span class="p-key">Name: </span>
-                        <span class="p-value">{{link.key}}</span>
+                        <span class="p-value">
+                            <a class="p-link" href="https://intelgraph.idefense.com/#/node/{{link.type}}/view/{{link.uuid}}">{{link.key}} {{fa-icon "external-link" class="external-icon"}}</a>
+                        </span>
                     </div>
                 {{/if}}
                 {{#if link.relationship}}
@@ -226,6 +234,7 @@
                         <span class="p-value">{{link.type}}</span>
                     </div>
                 {{/if}}
+                </div>
             {{/each}}
         {{/if}}
     </div>
@@ -239,6 +248,6 @@
 {{/unless}}
 {{else}}
     <div>
-        {{fa-icon "exclamation-circle" class="p-yellow icon"}}<span> No More Results Avialable</span>
+        {{fa-icon "exclamation-circle" class="p-yellow icon"}}<span> No More Results Available</span>
     </div>
 {{/if}}
