@@ -75,7 +75,7 @@ function doLookup(entities, options, cb) {
               next(err);
             } else {
               lookupResults.push(result);
-              Logger.debug({ result: result }, "Checking the result values");
+              //Logger.debug({ result: result }, "Checking the result values");
               next(null);
             }
           });
@@ -85,7 +85,7 @@ function doLookup(entities, options, cb) {
               next(err);
             } else {
               lookupResults.push(result);
-              Logger.debug({ result: result }, "Checking the result values");
+              //Logger.debug({ result: result }, "Checking the result values");
               next(null);
             }
           });
@@ -152,7 +152,7 @@ function _isEntityBlacklisted(entityObj, options) {
   return false;
 }
 
-function _getUrl(entityObj) {
+function _getUrl(entityObj, options) {
   let entityType = null;
   let query = null;
   let entityValue = entityObj.value.toLowerCase();
@@ -160,39 +160,51 @@ function _getUrl(entityObj) {
   switch (entityObj.type) {
     case "domain":
       entityType = "domain";
-      query= "?key.query";
+      query= "key.query";
       break;
     case "IPv4":
       entityType = "ip";
-      query= "?key.query";
+      query= "key.query";
       break;
     case "email":
       entityType = "phish";
-      query= "?sender.query";
-     entityValue = `"${entityValue}"`;      break;
+      query= "sender.query";
+      entityValue = `"${entityValue}"`;
+      break;
     case "hash":
       entityType = "file";
-      query= "?key.query";
+      query= "key.query";
       break;
     case "custom":
       entityType = "vulnerability";
-      query= "?key.values";
+      query= "key.values";
       entityValue=entityObj.value.toUpperCase();
       break;
     case "url":
       entityType = "url";
-      query= "?key.query";
+      query= "key.query";
       break;
   }
-  return `${BASE_URI}${entityType}${query}=${entityValue}`;
+  let request = {
+    uri: `${BASE_URI}${entityType}`,
+    qs: {
+      page_size: options.pageSize
+    }
+  };
+
+  request.qs[query] = entityValue;
+
+  return request;
 }
 
 
 function _getRequestOptions(entityObj, options) {
+  let request = _getUrl(entityObj, options);
+
   return {
-    uri:
-      _getUrl(entityObj) + "&page_size="+ options.pageSize,
+    uri: request.uri,
     headers: {"auth-token": options.apiKey},
+    qs: request.qs,
     method: "GET",
     json: true
   };
@@ -221,6 +233,8 @@ function _lookupEntity(entityObj, options, cb) {
     url = "https://intelgraph.idefense.com/#/node/phish/view/";
   }
 
+  Logger.trace({url}, 'Lookup URL');
+
   //const researchUri = LOOKUP_URI + entityObj.value;
   requestWithDefaults(requestOptions, function(err, response, body) {
     let errorObject = _isApiError(err, response, body, entityObj.value);
@@ -229,10 +243,6 @@ function _lookupEntity(entityObj, options, cb) {
       return;
     }
 
-    Logger.trace({response: response}, "Checking to see what the response is to ensure catching the right errors");
-
-
-
     if (_isLookupMiss(response, body)) {
       return cb(null, {
         entity: entityObj,
@@ -240,10 +250,10 @@ function _lookupEntity(entityObj, options, cb) {
       });
     }
 
-    Logger.debug(
-      { body: body, entity: entityObj.value },
-      "Printing out the results of Body "
-    );
+    // Logger.trace(
+    //   { body: body, entity: entityObj.value },
+    //   "Printing out the results of Body "
+    // );
 
     if (_.isNull(body) || _.isEmpty(body) || body.total_size === 0) {
       cb(null, {
