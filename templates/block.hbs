@@ -69,13 +69,11 @@
         {{/if}}
 
         {{#if result.filenames}}
-            {{#each result.filenames as |files|}}
             <div>
                 <span class="p-title">{{fa-icon "file" fixedWidth=true}} File Names</span>
             </div>
-            <div>
-              <span class="p-value">{{files}}</span>
-            </div>
+            {{#each result.filenames as |files|}}
+              <span class="i-tag">{{files}}</span>
             {{/each}}
         {{/if}}
 
