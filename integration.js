@@ -147,7 +147,7 @@ function _getUrl(entityObj, options) {
     case 'email':
       entityType = 'phish';
       query = 'sender.query';
-      entityValue = `"${entityValue}"`;
+      entityValue = `"${entityValue}"`; // email must be quoted to ensure exact matches
       break;
     case 'hash':
       entityType = 'file';
@@ -156,7 +156,7 @@ function _getUrl(entityObj, options) {
     case 'custom':
       entityType = 'vulnerability';
       query = 'key.values';
-      entityValue = entityObj.value.toUpperCase();
+      entityValue = entityObj.value.toUpperCase(); // CVE must be in uppercase to get results
       break;
     case 'url':
       entityType = 'url';
