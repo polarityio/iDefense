@@ -139,6 +139,7 @@ function _getUrl(entityObj, options) {
     case 'domain':
       entityType = 'domain';
       query = 'key.query';
+      entityValue = `"${entityValue}"`; // domain must be quoted to ensure exact matches
       break;
     case 'IPv4':
       entityType = 'ip';
