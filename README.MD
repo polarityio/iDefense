@@ -1,7 +1,7 @@
 # Polarity iDefense Integration
-The Polarity - iDefense integration searches iDefense for associated threat intelligence related to indicators on your screen.  The threat intelligence is then displayed  via the Polarity Overlay Window.
+The Polarity - iDefense integration searches iDefense for associated threat intelligence related to indicators on your screen.
 
-![idefense](https://user-images.githubusercontent.com/22529325/54382736-f3a81c00-4666-11e9-91c7-68a8b0d6ac9f.gif)
+![idefense](images/overlay.png)
 
 To learn more about iDefense, please visit the [official website](https://www.accenture.com/us-en/service-idefense-security-intelligence).
 
@@ -26,8 +26,6 @@ Domains that match the given regex will not be looked up (if blank, no domains w
 
 ### IP Blacklist Regex
 IPs that match the given regex will not be looked up (if blank, no IPs will be black listed)
-
-
 
 ## Polarity
 
