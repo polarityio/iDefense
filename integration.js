@@ -169,7 +169,7 @@ function _getUrl(entityObj) {
     case "email":
       entityType = "phish";
       query= "?sender.query";
-      break;
+     entityValue = `"${entityValue}"`;      break;
     case "hash":
       entityType = "file";
       query= "?key.query";
