@@ -102,7 +102,7 @@ module.exports = {
       name: "API Key",
       description: "iDefense API Key",
       default: "",
-      type: "text",
+      type: "password",
       userCanEdit: true,
       adminOnly: false
     },
