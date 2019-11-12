@@ -135,6 +135,7 @@ function _getUrl(entityObj, options) {
     case 'url':
       entityType = 'url';
       query = 'key.query';
+      entityValue = `"${entityValue}"`;
       break;
   }
   let request = {
