@@ -14,8 +14,6 @@ let domainBlacklistRegex = null;
 let ipBlacklistRegex = null;
 
 const BASE_URI = 'https://api.intelgraph.idefense.com/rest/fundamental/v0/';
-const MAX_DOMAIN_LABEL_LENGTH = 256;
-const MAX_ENTITY_LENGTH = 100;
 
 function _setupRegexBlacklists(options) {
   if (options.domainBlacklistRegex !== previousDomainRegexAsString && options.domainBlacklistRegex.length === 0) {
@@ -51,7 +49,7 @@ function doLookup(entities, options, cb) {
   async.each(
     entities,
     function(entityObj, next) {
-      if (_isInvalidEntity(entityObj) || _isEntityBlacklisted(entityObj, options)) {
+      if (_isEntityBlacklisted(entityObj, options)) {
         next(null);
       } else if (entityObj.types.indexOf('custom.cpe') >= 0) {
         _lookupEntityCPE(entityObj, options, function(err, result) {
@@ -59,7 +57,6 @@ function doLookup(entities, options, cb) {
             next(err);
           } else {
             lookupResults.push(result);
-            //Logger.debug({ result: result }, "Checking the result values");
             next(null);
           }
         });
@@ -69,7 +66,6 @@ function doLookup(entities, options, cb) {
             next(err);
           } else {
             lookupResults.push(result);
-            //Logger.debug({ result: result }, "Checking the result values");
             next(null);
           }
         });
@@ -81,30 +77,10 @@ function doLookup(entities, options, cb) {
   );
 }
 
-function _isInvalidEntity(entityObj) {
-  // DomaintTools API does not accept entities over 100 characters long so if we get any of those we don't look them up
-  if (entityObj.value.length > 100) {
-    return true;
-  }
-
-  // Domain labels (the parts in between the periods, must be 63 characters or less
-  if (entityObj.isDomain) {
-    const invalidLabel = entityObj.value.split('.').find((label) => {
-      return label.length > 256;
-    });
-
-    if (typeof invalidLabel !== 'undefined') {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 function _isEntityBlacklisted(entityObj, options) {
   const blacklist = options.blacklist;
 
-  Logger.trace({ blacklist: blacklist }, 'checking to see what blacklist looks like');
+  Logger.debug({ blacklist: blacklist }, 'checking to see what blacklist looks like');
 
   if (_.includes(blacklist, entityObj.value.toLowerCase())) {
     return true;
@@ -190,12 +166,11 @@ function _getRequestOptions(entityObj, options) {
 }
 
 function _lookupEntity(entityObj, options, cb) {
-  //Logger.trace("Logging if Running");
   const requestOptions = _getRequestOptions(entityObj, options);
 
   let minScore = parseInt(options.minScore, 10);
 
-  Logger.trace({ options: requestOptions }, 'Checking the request options coming through');
+  Logger.debug({ options: requestOptions }, 'Checking the request options coming through');
   let url = null;
 
   if (entityObj.type === 'IPv4') {
@@ -212,9 +187,6 @@ function _lookupEntity(entityObj, options, cb) {
     url = 'https://intelgraph.idefense.com/#/node/phish/view/';
   }
 
-  Logger.trace({ url }, 'Lookup URL');
-
-  //const researchUri = LOOKUP_URI + entityObj.value;
   requestWithDefaults(requestOptions, function(err, response, body) {
     let errorObject = _isApiError(err, response, body, entityObj.value);
     if (errorObject) {
@@ -229,10 +201,7 @@ function _lookupEntity(entityObj, options, cb) {
       });
     }
 
-    // Logger.trace(
-    //   { body: body, entity: entityObj.value },
-    //   "Printing out the results of Body "
-    // );
+    Logger.trace({ body: body, entity: entityObj.value }, 'HTTP Request Body');
 
     if (_.isNull(body) || _.isEmpty(body) || body.total_size === 0) {
       cb(null, {
