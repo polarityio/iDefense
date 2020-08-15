@@ -148,12 +148,12 @@ module.exports = {
         "Number of iDefense results to return about an associated indicator",
       default: 10,
       type: "number",
-      userCanEdit: false,
+      userCanEdit: true,
       adminOnly: false
     },
     {
-      key: "blacklist",
-      name: "Blacklist Domains or Ips",
+      key: "blocklist",
+      name: "Ignore Entities",
       description:
         "List of domains or Ips that you never want to send to iDefense",
       default: "",
@@ -162,20 +162,20 @@ module.exports = {
       adminOnly: false
     },
     {
-      key: "domainBlacklistRegex",
-      name: "Domain Black List Regex",
+      key: "domainBlocklistRegex",
+      name: "Ignore Domain Regex",
       description:
-        "Domains that match the given regex will not be looked up (if blank, no domains will be black listed)",
+        "Domains that match the given regex will not be looked up.",
       default: "",
       type: "text",
       userCanEdit: false,
       adminOnly: false
     },
     {
-      key: "ipBlacklistRegex",
-      name: "IP Black List Regex",
+      key: "ipBlocklistRegex",
+      name: "Ignore IP Regex",
       description:
-        "IPs that match the given regex will not be looked up (if blank, no IPs will be black listed)",
+        "IPs that match the given regex will not be looked up.",
       default: "",
       type: "text",
       userCanEdit: false,

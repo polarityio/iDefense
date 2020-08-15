@@ -5,7 +5,6 @@ The Polarity - iDefense integration searches iDefense for associated threat inte
 
 To learn more about iDefense, please visit the [official website](https://www.accenture.com/us-en/service-idefense-security-intelligence).
 
-> Note that this integration is currently in Beta.
 
 ## iDefense Integration Options
 
@@ -18,14 +17,14 @@ Minimum severity score to display in the Polarity overlay window
 ### Number of results
 Number of iDefense results to return about an associated indicator
 
-### Blacklist Domains or IPs
-List of domains or Ips that you never want to send to Domain Tools
+### Ignore List
+List of domains or Ips that you never want to send to iDefense.
 
-### Domain Blacklist Regex
-Domains that match the given regex will not be looked up (if blank, no domains will be black listed)
+### Ignore Domain Regex
+Domains that match the given regex will not be looked up.
 
-### IP Blacklist Regex
-IPs that match the given regex will not be looked up (if blank, no IPs will be black listed)
+### Ignore IP Regex
+IPs that match the given regex will not be looked up.
 
 ## Polarity
 

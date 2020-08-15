@@ -10,33 +10,33 @@ let Logger;
 let requestWithDefaults;
 let previousDomainRegexAsString = '';
 let previousIpRegexAsString = '';
-let domainBlacklistRegex = null;
-let ipBlacklistRegex = null;
+let domainBlocklistRegex = null;
+let ipBlocklistRegex = null;
 
 const BASE_URI = 'https://api.intelgraph.idefense.com/rest/fundamental/v0/';
 
-function _setupRegexBlacklists(options) {
-  if (options.domainBlacklistRegex !== previousDomainRegexAsString && options.domainBlacklistRegex.length === 0) {
-    Logger.debug('Removing Domain Blacklist Regex Filtering');
+function _setupRegexBlocklists(options) {
+  if (options.domainBlocklistRegex !== previousDomainRegexAsString && options.domainBlocklistRegex.length === 0) {
+    Logger.debug('Removing Domain Blocklist Regex Filtering');
     previousDomainRegexAsString = '';
-    domainBlacklistRegex = null;
+    domainBlocklistRegex = null;
   } else {
-    if (options.domainBlacklistRegex !== previousDomainRegexAsString) {
-      previousDomainRegexAsString = options.domainBlacklistRegex;
-      Logger.debug({ domainBlacklistRegex: previousDomainRegexAsString }, 'Modifying Domain Blacklist Regex');
-      domainBlacklistRegex = new RegExp(options.domainBlacklistRegex, 'i');
+    if (options.domainBlocklistRegex !== previousDomainRegexAsString) {
+      previousDomainRegexAsString = options.domainBlocklistRegex;
+      Logger.debug({ domainBlocklistRegex: previousDomainRegexAsString }, 'Modifying Domain Blocklist Regex');
+      domainBlocklistRegex = new RegExp(options.domainBlocklistRegex, 'i');
     }
   }
 
-  if (options.ipBlacklistRegex !== previousIpRegexAsString && options.ipBlacklistRegex.length === 0) {
-    Logger.debug('Removing IP Blacklist Regex Filtering');
+  if (options.ipBlocklistRegex !== previousIpRegexAsString && options.ipBlocklistRegex.length === 0) {
+    Logger.debug('Removing IP Blocklist Regex Filtering');
     previousIpRegexAsString = '';
-    ipBlacklistRegex = null;
+    ipBlocklistRegex = null;
   } else {
-    if (options.ipBlacklistRegex !== previousIpRegexAsString) {
-      previousIpRegexAsString = options.ipBlacklistRegex;
-      Logger.debug({ ipBlacklistRegex: previousIpRegexAsString }, 'Modifying IP Blacklist Regex');
-      ipBlacklistRegex = new RegExp(options.ipBlacklistRegex, 'i');
+    if (options.ipBlocklistRegex !== previousIpRegexAsString) {
+      previousIpRegexAsString = options.ipBlocklistRegex;
+      Logger.debug({ ipBlocklistRegex: previousIpRegexAsString }, 'Modifying IP Blocklist Regex');
+      ipBlocklistRegex = new RegExp(options.ipBlocklistRegex, 'i');
     }
   }
 }
@@ -44,12 +44,12 @@ function _setupRegexBlacklists(options) {
 function doLookup(entities, options, cb) {
   let lookupResults = [];
 
-  _setupRegexBlacklists(options);
+  _setupRegexBlocklists(options);
 
   async.each(
     entities,
     function(entityObj, next) {
-      if (_isEntityBlacklisted(entityObj, options)) {
+      if (_isEntityBlocklisted(entityObj, options)) {
         next(null);
       } else {
         _lookupEntity(entityObj, options, function(err, result) {
@@ -68,28 +68,28 @@ function doLookup(entities, options, cb) {
   );
 }
 
-function _isEntityBlacklisted(entityObj, options) {
-  const blacklist = options.blacklist;
+function _isEntityBlocklisted(entityObj, options) {
+  const blocklist = options.blocklist;
 
-  Logger.debug({ blacklist: blacklist }, 'checking to see what blacklist looks like');
+  Logger.debug({ blocklist: blocklist }, 'checking to see what blocklist looks like');
 
-  if (_.includes(blacklist, entityObj.value.toLowerCase())) {
+  if (_.includes(blocklist, entityObj.value.toLowerCase())) {
     return true;
   }
 
   if (entityObj.isIPv4 && !entityObj.isPrivateIP) {
-    if (ipBlacklistRegex !== null) {
-      if (ipBlacklistRegex.test(entityObj.value)) {
-        Logger.debug({ ip: entityObj.value }, 'Blocked BlackListed IP Lookup');
+    if (ipBlocklistRegex !== null) {
+      if (ipBlocklistRegex.test(entityObj.value)) {
+        Logger.debug({ ip: entityObj.value }, 'Blocked BlockListed IP Lookup');
         return true;
       }
     }
   }
 
   if (entityObj.isDomain) {
-    if (domainBlacklistRegex !== null) {
-      if (domainBlacklistRegex.test(entityObj.value)) {
-        Logger.debug({ domain: entityObj.value }, 'Blocked BlackListed Domain Lookup');
+    if (domainBlocklistRegex !== null) {
+      if (domainBlocklistRegex.test(entityObj.value)) {
+        Logger.debug({ domain: entityObj.value }, 'Blocked BlockListed Domain Lookup');
         return true;
       }
     }
@@ -297,23 +297,23 @@ function validateOptions(userOptions, cb) {
     });
   }
 
-  if (typeof userOptions.domainBlacklistRegex.value === 'string' && userOptions.domainBlacklistRegex.value.length > 0) {
+  if (typeof userOptions.domainBlocklistRegex.value === 'string' && userOptions.domainBlocklistRegex.value.length > 0) {
     try {
-      new RegExp(userOptions.domainBlacklistRegex.value);
+      new RegExp(userOptions.domainBlocklistRegex.value);
     } catch (error) {
       errors.push({
-        key: 'domainBlacklistRegex',
+        key: 'domainBlocklistRegex',
         message: error.toString()
       });
     }
   }
 
-  if (typeof userOptions.ipBlacklistRegex.value === 'string' && userOptions.ipBlacklistRegex.value.length > 0) {
+  if (typeof userOptions.ipBlocklistRegex.value === 'string' && userOptions.ipBlocklistRegex.value.length > 0) {
     try {
-      new RegExp(userOptions.ipBlacklistRegex.value);
+      new RegExp(userOptions.ipBlocklistRegex.value);
     } catch (e) {
       errors.push({
-        key: 'ipBlacklistRegex',
+        key: 'ipBlocklistRegex',
         message: error.toString()
       });
     }
