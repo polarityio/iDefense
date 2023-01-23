@@ -1,0 +1,127 @@
+{
+  "name": "iDefense",
+  "acronym": "iDEF",
+  "defaultColor": "light-blue",
+  "description": "iDefense Security Intelligence",
+  "entityTypes": ["IPv4", "domain", "email", "url", "hash"],
+  "customTypes": [
+    {
+      "key": "cve",
+      "regex": "CVE-(1999|2\\d{3})-(0\\d{2}[1-9]|[1-9]\\d{3,})"
+    },
+    {
+      "key": "cpe",
+      "regex": "[aho](:[A-Za-z0-9\\._\\-~]*(:[A-Za-z0-9\\._\\-~]*(:[A-Za-z0-9\\._\\.\\-~]*(:[A-Za-z0-9\\._\\-~]*(:[A-Za-z0-9\\._\\-~]*(:[A-Za-z0-9\\._\\-~]*)?)?)?)?))"
+    }
+  ],
+  "styles": ["./styles/idefense.less"],
+  "block": {
+    "component": {
+      "file": "./components/block.js"
+    },
+    "template": {
+      "file": "./templates/block.hbs"
+    }
+  },
+  "summary": {
+    "component": {
+      "file": "./components/summary.js"
+    },
+    "template": {
+      "file": "./templates/summary.hbs"
+    }
+  },
+  "request": {
+    "cert": "",
+    "key": "",
+    "passphrase": "",
+    "ca": "",
+    "proxy": "",
+    "rejectUnauthorized": true
+  },
+  "logging": {
+    "level": "info"
+  },
+  "options": [
+    {
+      "key": "apiKey",
+      "name": "API Key",
+      "description": "iDefense API Key",
+      "default": "",
+      "type": "password",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "minScore",
+      "name": "Minimum Severity Score",
+      "description": "The minimum severity score required for indicators to be displayed in the Overlay Window",
+      "default": {
+        "value": "1",
+        "display": "1 - Minimal"
+      },
+      "type": "select",
+      "options": [
+        {
+          "value": "5",
+          "display": "5 - Critical"
+        },
+        {
+          "value": "4",
+          "display": "4 - High"
+        },
+        {
+          "value": "3",
+          "display": "3 - Medium"
+        },
+        {
+          "value": "2",
+          "display": "2 - Low"
+        },
+        {
+          "value": "1",
+          "display": "1 - Minimal"
+        }
+      ],
+      "multiple": false,
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "pageSize",
+      "name": "Number of Results",
+      "description": "Number of iDefense results to return about an associated indicator",
+      "default": 10,
+      "type": "number",
+      "userCanEdit": true,
+      "adminOnly": false
+    },
+    {
+      "key": "blocklist",
+      "name": "Ignore Entities",
+      "description": "List of domains or Ips that you never want to send to iDefense",
+      "default": "",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": false
+    },
+    {
+      "key": "domainBlocklistRegex",
+      "name": "Ignore Domain Regex",
+      "description": "Domains that match the given regex will not be looked up.",
+      "default": "",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": false
+    },
+    {
+      "key": "ipBlocklistRegex",
+      "name": "Ignore IP Regex",
+      "description": "IPs that match the given regex will not be looked up.",
+      "default": "",
+      "type": "text",
+      "userCanEdit": false,
+      "adminOnly": false
+    }
+  ]
+}

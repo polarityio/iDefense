@@ -5,7 +5,7 @@ module.exports = {
    * @type String
    * @required
    */
-  name: "iDefense",
+  name: 'iDefense',
   /**
    * The acronym that appears in the notification window when information from this integration
    * is displayed.  Note that the acronym is included as part of each "tag" in the summary information
@@ -15,7 +15,8 @@ module.exports = {
    * @type String
    * @required
    */
-  acronym: "iDEF",
+  acronym: 'iDEF',
+  defaultColor: 'light-blue',
 
   /**
    * Description for this integration which is displayed in the Polarity integrations user interface
@@ -23,18 +24,19 @@ module.exports = {
    * @type String
    * @optional
    */
-  description: "iDefense Security Intelligence",
-  entityTypes: ["IPv4", "domain", 'email', 'url', 'hash'],
-  customTypes:[
-        {
-            key: 'cve',
-            regex: /CVE-(1999|2\d{3})-(0\d{2}[1-9]|[1-9]\d{3,})/
-        },
-        {
-            key: 'cpe',
-            regex: /[aho](:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\.\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*)?)?)?)?))/
-        }
-    ],
+  description: 'iDefense Security Intelligence',
+  entityTypes: ['IPv4', 'domain', 'email', 'url', 'hash'],
+  customTypes: [
+    {
+      key: 'cve',
+      regex: /CVE-(1999|2\d{3})-(0\d{2}[1-9]|[1-9]\d{3,})/
+    },
+    {
+      key: 'cpe',
+      regex:
+        /[aho](:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\.\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*(:[A-Za-z0-9\._\-~]*)?)?)?)?))/
+    }
+  ],
   /**
    * An array of style files (css or less) that will be included for your integration. Any styles specified in
    * the below files can be used in your custom template.
@@ -42,7 +44,7 @@ module.exports = {
    * @type Array
    * @optional
    */
-  styles: ["./styles/idefense.less"],
+  styles: ['./styles/idefense.less'],
   /**
    * Provide custom component logic and template for rendering the integration details block.  If you do not
    * provide a custom template and/or component then the integration will display data as a table of key value
@@ -53,41 +55,41 @@ module.exports = {
    */
   block: {
     component: {
-      file: "./components/block.js"
+      file: './components/block.js'
     },
     template: {
-      file: "./templates/block.hbs"
+      file: './templates/block.hbs'
     }
   },
   summary: {
     component: {
-      file: "./components/summary.js"
+      file: './components/summary.js'
     },
     template: {
-      file: "./templates/summary.hbs"
+      file: './templates/summary.hbs'
     }
   },
   request: {
     // Provide the path to your certFile. Leave an empty string to ignore this option.
     // Relative paths are relative to the integration's root directory
-    cert: "",
+    cert: '',
     // Provide the path to your private key. Leave an empty string to ignore this option.
     // Relative paths are relative to the integration's root directory
-    key: "",
+    key: '',
     // Provide the key passphrase if required.  Leave an empty string to ignore this option.
     // Relative paths are relative to the integration's root directory
-    passphrase: "",
+    passphrase: '',
     // Provide the Certificate Authority. Leave an empty string to ignore this option.
     // Relative paths are relative to the integration's root directory
-    ca: "",
+    ca: '',
     // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
     // the url parameter (by embedding the auth info in the uri)
-    proxy: "",
+    proxy: '',
 
     rejectUnauthorized: true
   },
   logging: {
-    level: "info" //trace, debug, info, warn, error, fatal
+    level: 'info' //trace, debug, info, warn, error, fatal
   },
   /**
    * Options that are displayed to the user/admin in the Polarity integration user-interface.  Should be structured
@@ -98,11 +100,11 @@ module.exports = {
    */
   options: [
     {
-      key: "apiKey",
-      name: "API Key",
-      description: "iDefense API Key",
-      default: "",
-      type: "password",
+      key: 'apiKey',
+      name: 'API Key',
+      description: 'iDefense API Key',
+      default: '',
+      type: 'password',
       userCanEdit: true,
       adminOnly: false
     },
@@ -142,42 +144,38 @@ module.exports = {
       adminOnly: false
     },
     {
-      key: "pageSize",
-      name: "Number of Results",
-      description:
-        "Number of iDefense results to return about an associated indicator",
+      key: 'pageSize',
+      name: 'Number of Results',
+      description: 'Number of iDefense results to return about an associated indicator',
       default: 10,
-      type: "number",
+      type: 'number',
       userCanEdit: true,
       adminOnly: false
     },
     {
-      key: "blocklist",
-      name: "Ignore Entities",
-      description:
-        "List of domains or Ips that you never want to send to iDefense",
-      default: "",
-      type: "text",
+      key: 'blocklist',
+      name: 'Ignore Entities',
+      description: 'List of domains or Ips that you never want to send to iDefense',
+      default: '',
+      type: 'text',
       userCanEdit: false,
       adminOnly: false
     },
     {
-      key: "domainBlocklistRegex",
-      name: "Ignore Domain Regex",
-      description:
-        "Domains that match the given regex will not be looked up.",
-      default: "",
-      type: "text",
+      key: 'domainBlocklistRegex',
+      name: 'Ignore Domain Regex',
+      description: 'Domains that match the given regex will not be looked up.',
+      default: '',
+      type: 'text',
       userCanEdit: false,
       adminOnly: false
     },
     {
-      key: "ipBlocklistRegex",
-      name: "Ignore IP Regex",
-      description:
-        "IPs that match the given regex will not be looked up.",
-      default: "",
-      type: "text",
+      key: 'ipBlocklistRegex',
+      name: 'Ignore IP Regex',
+      description: 'IPs that match the given regex will not be looked up.',
+      default: '',
+      type: 'text',
       userCanEdit: false,
       adminOnly: false
     }

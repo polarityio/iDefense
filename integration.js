@@ -1,6 +1,6 @@
 'use strict';
 
-const request = require('request');
+const request = require('postman-request');
 const _ = require('lodash');
 const async = require('async');
 const config = require('./config/config');
@@ -15,7 +15,7 @@ let ipBlocklistRegex = null;
 
 const BASE_URI = 'https://api.intelgraph.idefense.com/rest/fundamental/v0/';
 
-function _setupRegexBlocklists(options) {
+function _setupRegexBlocklists (options) {
   if (options.domainBlocklistRegex !== previousDomainRegexAsString && options.domainBlocklistRegex.length === 0) {
     Logger.debug('Removing Domain Blocklist Regex Filtering');
     previousDomainRegexAsString = '';
@@ -41,18 +41,18 @@ function _setupRegexBlocklists(options) {
   }
 }
 
-function doLookup(entities, options, cb) {
+function doLookup (entities, options, cb) {
   let lookupResults = [];
 
   _setupRegexBlocklists(options);
 
   async.each(
     entities,
-    function(entityObj, next) {
+    function (entityObj, next) {
       if (_isEntityBlocklisted(entityObj, options)) {
         next(null);
       } else {
-        _lookupEntity(entityObj, options, function(err, result) {
+        _lookupEntity(entityObj, options, function (err, result) {
           if (err) {
             next(err);
           } else {
@@ -62,13 +62,13 @@ function doLookup(entities, options, cb) {
         });
       }
     },
-    function(err) {
+    function (err) {
       cb(err, lookupResults);
     }
   );
 }
 
-function _isEntityBlocklisted(entityObj, options) {
+function _isEntityBlocklisted (entityObj, options) {
   const blocklist = options.blocklist;
 
   Logger.debug({ blocklist: blocklist }, 'checking to see what blocklist looks like');
@@ -97,7 +97,7 @@ function _isEntityBlocklisted(entityObj, options) {
   return false;
 }
 
-function _getUrl(entityObj, options) {
+function _getUrl (entityObj, options) {
   let entityType = null;
   let query = null;
   let entityValue = entityObj.value.toLowerCase();
@@ -129,7 +129,7 @@ function _getUrl(entityObj, options) {
       } else {
         entityType = '';
         query = 'key.values';
-        entityValue = `cpe:/${entityObj.value.toLowerCase()}`
+        entityValue = `cpe:/${entityObj.value.toLowerCase()}`;
       }
       break;
     case 'url':
@@ -151,7 +151,7 @@ function _getUrl(entityObj, options) {
   return request;
 }
 
-function _getRequestOptions(entityObj, options) {
+function _getRequestOptions (entityObj, options) {
   let request = _getUrl(entityObj, options);
 
   return {
@@ -163,7 +163,7 @@ function _getRequestOptions(entityObj, options) {
   };
 }
 
-function _lookupEntity(entityObj, options, cb) {
+function _lookupEntity (entityObj, options, cb) {
   const requestOptions = _getRequestOptions(entityObj, options);
 
   Logger.debug({ options: requestOptions }, 'Checking the request options coming through');
@@ -185,7 +185,7 @@ function _lookupEntity(entityObj, options, cb) {
     url = 'https://intelgraph.idefense.com/#/node/cpe/view/';
   }
 
-  requestWithDefaults(requestOptions, function(err, response, body) {
+  requestWithDefaults(requestOptions, function (err, response, body) {
     let errorObject = _isApiError(err, response, body, entityObj.value);
     if (errorObject) {
       cb(errorObject);
@@ -227,7 +227,7 @@ function _lookupEntity(entityObj, options, cb) {
   });
 }
 
-function _isLookupMiss(response, body) {
+function _isLookupMiss (response, body) {
   return (
     response.statusCode === 404 ||
     response.statusCode === 400 ||
@@ -238,7 +238,7 @@ function _isLookupMiss(response, body) {
   );
 }
 
-function _isApiError(err, response, body, entityValue) {
+function _isApiError (err, response, body, entityValue) {
   if (err) {
     return {
       detail: 'Error executing HTTP request',
@@ -285,7 +285,7 @@ function _isApiError(err, response, body, entityValue) {
   return null;
 }
 
-function validateOptions(userOptions, cb) {
+function validateOptions (userOptions, cb) {
   let errors = [];
   if (
     typeof userOptions.apiKey.value !== 'string' ||
@@ -323,14 +323,14 @@ function validateOptions(userOptions, cb) {
 }
 
 // function that takes the ErrorObject and passes the error message to the notification window
-function _createJsonErrorPayload(msg, pointer, httpCode, code, title, meta) {
+function _createJsonErrorPayload (msg, pointer, httpCode, code, title, meta) {
   return {
     errors: [_createJsonErrorObject(msg, pointer, httpCode, code, title, meta)]
   };
 }
 
 // function that creates the Json object to be passed to the payload
-function _createJsonErrorObject(msg, pointer, httpCode, code, title, meta) {
+function _createJsonErrorObject (msg, pointer, httpCode, code, title, meta) {
   let error = {
     detail: msg,
     status: httpCode.toString(),
@@ -351,7 +351,7 @@ function _createJsonErrorObject(msg, pointer, httpCode, code, title, meta) {
   return error;
 }
 
-function startup(logger) {
+function startup (logger) {
   Logger = logger;
   let defaults = {};
 
