@@ -25,7 +25,7 @@ module.exports = {
    * @optional
    */
   description: 'iDefense Security Intelligence',
-  entityTypes: ['IPv4', 'domain', 'email', 'url', 'hash'],
+  entityTypes: ['IPv4', 'domain', 'email', 'url', 'MD5', 'SHA1', 'SHA256'],
   customTypes: [
     {
       key: 'cve',
@@ -84,7 +84,7 @@ module.exports = {
     ca: '',
     // An HTTP proxy to be used. Supports proxy Auth with Basic Auth, identical to support for
     // the url parameter (by embedding the auth info in the uri)
-    proxy: ""
+    proxy: ''
   },
   logging: {
     level: 'info' //trace, debug, info, warn, error, fatal
